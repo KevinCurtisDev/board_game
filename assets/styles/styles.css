@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.red {
+    width: 800px;
+    height: 800px;
+    background-color: #fff;
+}
+
+.game-board__row {
+    display: flex;
+    flex-wrap: no-wrap;
+}
+
+.game-board__col {
+    height: 50px;
+    width: 50px;
+    background-color: rgb(197, 194, 194);
+    border: 1px solid #fff;
+}
