@@ -3,13 +3,30 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.js"></script>
     <title>Board Game</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="assets/styles/styles.css">
 </head>
 <body>
-    <div id="root"></div>
-
+    <header>
+        <nav class="nav">
+            <h1 class="game-title">GAME NAME</h1>
+        </nav>
+    </header>
+    <main>
+        <section id="player-one-score-board" class="player-score-board">
+            <h2>Player One</h2>
+            <p>Current weapon: <span id="player-one-current-weapon"></span></p>
+            <p>Health: <span id="player-one-health"></span></p>
+        </section>
+        <div id="root" class="root"></div>
+        <section id="player-two-score-board" class="player-score-board">
+            <h2>Player Two</h2>
+            <p>Current weapon: <span id="player-two-current-weapon"></span></p>
+            <p>Health: <span id="player-two-health"></span></p>
+        </section>
+    </main>
     <script src="js/app.js"></script>
 </body>
 </html>

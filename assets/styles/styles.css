@@ -4,15 +4,47 @@
     box-sizing: border-box;
 }
 
-.red {
-    width: 800px;
-    height: 800px;
-    background-color: #fff;
+.tile {
+  width: 45px;
+  height: 45px;
+  border: 1px solid black;
+  margin: 1px;
 }
 
-.game-board__row {
+.nav {
+    background-color: rgb(31, 27, 27);
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+}
+
+.nav__game-title {
+    text-align: center;
+    font-size: 1rem;
+}
+
+.root {
+    display: flex;
+    flex-wrap: wrap;
+    width: 500px;
+    margin: 10px;
+}
+
+main {
     display: flex;
     flex-wrap: no-wrap;
+    margin-top: 40px;
+    padding: 10px;
+    justify-content: space-around;
+}
+
+.player-score-board {
+    width: 200px;
+    padding: 20px;
+    background-color: rgb(114, 41, 41);
+    height: 500px;
+    margin-top: 10px;
+    color: #fff;
 }
 
 .game-board__col {
@@ -20,4 +52,44 @@
     width: 50px;
     background-color: rgb(197, 194, 194);
     border: 1px solid #fff;
+    pointer-events: none;
 }
+
+.game-board__col-green {
+    background-color: rgba(136, 252, 4, 0.637);
+}
+
+.active1 {
+  background-image: url("https://mario.nintendo.com/assets/img/home/char-mario.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.active2 {
+  background-image: url("https://cdn-images-1.medium.com/max/1600/1*x2Gw1gKrRQi5WEcBrKYA1g.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.new-move-green {
+  pointer-events: auto;
+  cursor: pointer;
+  border: 4px solid rgba(36, 238, 29, 0.5);
+}
+
+.new-move-green:hover {
+  background-color: rgba(36, 238, 29, 0.5);
+}
+
+.new-move-red {
+  pointer-events: auto;
+  cursor: pointer;
+  border: 4px solid rgba(218, 16, 16, 0.7);
+}
+
+.new-move-red:hover {
+  background-color: rgba(218, 16, 16, 0.7);
+}
+
