@@ -11,19 +11,31 @@
 <body>
     <header>
         <nav class="nav">
-            <h1 class="game-title">GAME NAME</h1>
+            <h1 class="game-title">Mario v Donkey Kong</h1>
         </nav>
     </header>
+    <div class="battle" id="battle">
+        <section class="battle__card" id="player-one-battle-card">
+            <button>Attack</button>
+            <button>Defend</button>
+        </section>
+        <section class="battle__card" id="player-two-battle-card">
+            <button>Attack</button>
+            <button>Defend</button>
+        </section>
+    </div>
     <main>
         <section id="player-one-score-board" class="player-score-board">
-            <h2>Player One</h2>
-            <p>Current weapon: <span id="player-one-current-weapon"></span></p>
+            <div class="character active1"></div>
+            <h2>Mario</h2>
+            <p>Weapon: <span id="player-one-current-weapon"></span></p>
             <p>Health: <span id="player-one-health"></span></p>
         </section>
         <div id="root" class="root"></div>
         <section id="player-two-score-board" class="player-score-board">
-            <h2>Player Two</h2>
-            <p>Current weapon: <span id="player-two-current-weapon"></span></p>
+            <div class="character active2"></div>
+            <h2>Donky Kong</h2>
+            <p>Weapon: <span id="player-two-current-weapon"></span></p>
             <p>Health: <span id="player-two-health"></span></p>
         </section>
     </main>

@@ -59,15 +59,49 @@ main {
     background-color: rgba(136, 252, 4, 0.637);
 }
 
+.character {
+    width: 100%;
+    height: 200px;
+}
+
+
 .active1 {
-  background-image: url("https://mario.nintendo.com/assets/img/home/char-mario.png");
+  background-image: url("https://banner2.kisspng.com/20171218/db1/mario-png-5a37d11eb6ddb4.656815051513607454749.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
 }
 
 .active2 {
-  background-image: url("https://cdn-images-1.medium.com/max/1600/1*x2Gw1gKrRQi5WEcBrKYA1g.png");
+  background-image: url("https://banner2.kisspng.com/20180329/ssq/kisspng-mario-vs-donkey-kong-2-march-of-the-minis-donkey-donkey-kong-5abd2f2926c4c8.5661602615223478171588.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.banana {
+  background-image: url("https://banner2.kisspng.com/20180409/fje/kisspng-mario-kart-8-mario-kart-7-super-mario-kart-mario-k-banana-peel-5acb5bf1cb6cf7.6440772415232767858332.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.redShell {
+  background-image: url("https://banner2.kisspng.com/20180326/igw/kisspng-mario-kart-7-mario-kart-wii-super-mario-kart-mario-shell-5ab93876b45901.6631455815220880547387.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.greenShell {
+  background-image: url("https://banner2.kisspng.com/20180319/zkw/kisspng-mario-kart-wii-mario-kart-7-super-mario-kart-mario-green-dash-cliparts-5aaf862d1775d3.1764181915214525890961.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.bomb {
+  background-image: url("https://banner2.kisspng.com/20180325/fwe/kisspng-super-mario-bros-mario-kart-wii-new-super-mario-b-bullets-5ab794799f0f62.7735228915219805376515.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -83,13 +117,26 @@ main {
   background-color: rgba(36, 238, 29, 0.5);
 }
 
-.new-move-red {
-  pointer-events: auto;
-  cursor: pointer;
-  border: 4px solid rgba(218, 16, 16, 0.7);
+.obstruction {
+    background-color: gray;
+    pointer-events: none;
 }
 
-.new-move-red:hover {
-  background-color: rgba(218, 16, 16, 0.7);
+.battle {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    background: rgb(180, 176, 176);
+    z-index: 100;
+    display: none;
 }
 
+.battle__card {
+    float: left;
+    height: 100%;
+    width: 50%;
+    background-color: white;
+    border: 1px solid gray;
+    box-shadow: 2px 2px 2px black;
+}
