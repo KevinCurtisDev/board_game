@@ -7,7 +7,7 @@
 .tile {
   width: 45px;
   height: 45px;
-  border: 1px solid black;
+  border: 1px solid rgb(209, 206, 206);
   margin: 1px;
 }
 
@@ -72,6 +72,25 @@ main {
   background-size: contain;
 }
 
+#mario {
+  width: 80%;
+  height: 400px;
+  margin: 0 auto;
+  background-image: url("https://img.rankedboost.com/wp-content/plugins/super-smash-bros-ultimate/assets/character-images-main/Mario_SSBU.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+#dk {
+  width: 80%;
+  height: 400px;
+  margin: 0 auto;
+  background-image: url("https://vignette.wikia.nocookie.net/fantendo/images/b/b5/SuperMarioParty_DonkeyKong.png/revision/latest?cb=20181005213911");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
 .active2 {
   background-image: url("https://banner2.kisspng.com/20180329/ssq/kisspng-mario-vs-donkey-kong-2-march-of-the-minis-donkey-donkey-kong-5abd2f2926c4c8.5661602615223478171588.jpg");
   background-repeat: no-repeat;
@@ -84,6 +103,7 @@ main {
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
+  pointer-events: none;
 }
 
 .redShell {
@@ -91,6 +111,7 @@ main {
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
+  pointer-events: none;
 }
 
 .greenShell {
@@ -98,6 +119,7 @@ main {
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
+  pointer-events: none;
 }
 
 .bomb {
@@ -105,6 +127,7 @@ main {
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
+  pointer-events: none;
 }
 
 .new-move-green {
@@ -118,7 +141,11 @@ main {
 }
 
 .obstruction {
-    background-color: gray;
+    background-image: url("https://cdna.artstation.com/p/assets/images/images/004/126/898/large/mikael-mellbris-sd-board-game-tile.jpg?1480594737");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  pointer-events: none;
     pointer-events: none;
 }
 
@@ -139,4 +166,33 @@ main {
     background-color: white;
     border: 1px solid gray;
     box-shadow: 2px 2px 2px black;
+}
+
+.active-card {
+  background-color: #ccffcc;
+}
+
+.attack-btn {
+  color: #fff;
+  background-color: rgb(158, 16, 16);
+  padding: 10px;
+  font-size: 1.2rem;
+  width: 200px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.defend-btn {
+  color: #fff;
+  background-color: rgb(12, 175, 61);
+  padding: 10px;
+  font-size: 1.2rem;
+  width: 200px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+.no-click {
+  pointer-events: none;
 }
