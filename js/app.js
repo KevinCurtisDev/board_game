@@ -2,10 +2,9 @@ $(document).ready(function () {
     //check that the JavaScript file is set up with the correct file path
     console.log("script loaded");
 
-    //set up root element in index.html file
+    //set variables for dom elements
     const rootDiv = $("#root");
-
-    const battleDiv = document.getElementById("battle");
+    const battleDiv = $("#battle");
     const playerOneBattleCard = $("#player-one-battle-card");
     const playerOneBattleCardHealth = document.getElementById("battle__card-player-one-health");
     const playerTwoBattleCard = $("#player-two-battle-card");
@@ -14,6 +13,10 @@ $(document).ready(function () {
     const playerOneDefendBtn = document.getElementById("player1-defend");
     const playerTwoAttackBtn = document.getElementById("player2-attack");
     const playerTwoDefendBtn = document.getElementById("player2-defend");
+    const playerOneHealth = document.getElementById("player-one-health");
+    const playerTwoHealth = document.getElementById("player-two-health");
+    const playerOneWeapon = document.getElementById("player-one-current-weapon");
+    const playerTwoWeapon = document.getElementById("player-two-current-weapon");
 
     //generate random starting positions
     let randomCol = 0;
@@ -36,33 +39,8 @@ $(document).ready(function () {
     let maxRow;
     let minRow;
 
-    //Set player battle variables
-    const playerOneHealth = document.getElementById("player-one-health");
-    const playerTwoHealth = document.getElementById("player-two-health");
-    const playerOneWeapon = document.getElementById("player-one-current-weapon");
-    const playerTwoWeapon = document.getElementById("player-two-current-weapon");
 
     /***************************** OBJECTS *******************************/
-
-    /*********************** PLAYER OBJECTS ******************************/
-
-    function Player(playerID, health) {
-        this.playerID = playerID;
-        this.health = health;
-        this.active = false;
-        this.currentWeapon = [];
-        this.attack = function (player, defender) {
-            if(!player1.active) {
-                defender.health -= player.currentWeapon[player.currentWeapon.length - 1].weaponDamage;
-                playerOneBattleCardHealth.innerHTML = player1.health;
-                playerTwoBattleCardHealth.innerHTML = player2.health;
-            }
-        };
-        this.defend = function () {
-            console.log("defend");
-        };
-    }
-
 
     /************************** WEAPON OBJECTS ****************************/
 
@@ -76,12 +54,101 @@ $(document).ready(function () {
     let greenShell = new Weapon("greenShell", 20);
     let bomb = new Weapon("bomb", 30);
 
+    /*********************** PLAYER OBJECTS ******************************/
+
+    function Player(playerID, health) {
+        this.playerID = playerID,
+        this.health = health,
+        this.active = false,
+        this.currentWeapon = [banana],
+        //attack method
+        this.attack = function () {
+            if(player1.active) {
+                player2.health -= this.currentWeapon[this.currentWeapon.length - 1].weaponDamage;
+                playerOneBattleCardHealth.innerHTML = this.health;
+                if (player2.health <= 0 ) {
+                    playerTwoBattleCardHealth.innerHTML = 0;
+                    alert("Mario Wins!");
+                } else {
+                    playerTwoBattleCardHealth.innerHTML = player2.health;
+                }
+                this.active = false;
+                player2.active = true;
+            } 
+            else if(player2.active){
+                player1.health -= this.currentWeapon[this.currentWeapon.length - 1].weaponDamage;
+                playerTwoBattleCardHealth.innerHTML = this.health;
+                if (player1.health <= 0) {
+                    playerOneBattleCardHealth.innerHTML = 0;
+                    alert("Donkey Kong Wins!");
+                } else {
+                    playerOneBattleCardHealth.innerHTML = player1.health;
+                }
+                player1.active = true;
+                this.active = false;
+            }
+        },
+        //defend method
+        this.defend = function () {
+            if (player1.active) {
+                this.health += player2.currentWeapon[player2.currentWeapon.length - 1].weaponDamage/2;
+                this.active = false;
+                player2.active = true;
+            }
+            else if (player2.active) {
+                this.health += player1.currentWeapon[player1.currentWeapon.length - 1].weaponDamage / 2;
+                player1.active = true;
+                this.active = false;
+            }
+        }
+    }
+
+    let player1 = new Player("player1", 100);
+    let player2 = new Player("player2", 100);
 
 
+    player1.active = true;
 
-    const player1 = new Player("player1", 100);
-    const player2 = new Player("player2", 100);
+    if (player1.active) {
+        currentPlayer = player1;
+    } else {
+        currentPlayer = player2;
+    }
 
+/************************************** FUNCTIONS ************************************/
+    const playerOneActiveCard = () => {
+        playerTwoBattleCard.addClass("active-card");
+        playerOneBattleCard.removeClass("active-card");
+        $(playerOneAttackBtn).addClass("no-click");
+        $(playerTwoAttackBtn).removeClass("no-click");
+        $(playerOneDefendBtn).addClass("no-click");
+        $(playerTwoDefendBtn).removeClass("no-click");
+    }
+
+    const playerTwoActiveCard = () => {
+        playerOneBattleCard.addClass("active-card");
+        playerTwoBattleCard.removeClass("active-card");
+        $(playerTwoAttackBtn).addClass("no-click");
+        $(playerOneAttackBtn).removeClass("no-click");
+        $(playerTwoDefendBtn).addClass("no-click");
+        $(playerOneDefendBtn).removeClass("no-click");
+    }
+
+    const battle = () => {
+        battleDiv.css("display", "block");
+        if (player1.active) {
+            playerTwoBattleCard.addClass("active-card");
+            playerOneBattleCard.removeClass("active-card");
+            player1.active = false;
+            player2.active = true;
+        } else {
+            playerOneBattleCard.addClass("active-card");
+            playerTwoBattleCard.removeClass("active-card");
+            player1.active = true;
+            player2.active = false;
+        }
+        alert("fight");
+    }
 
     /**************************** create a board of 100 tiles ***************************/
     for (let i = 0; i < 10; i++) {
@@ -97,23 +164,23 @@ $(document).ready(function () {
     /********************************************************************************************/
 
 
-
     //Get a Node list of all tile divs
     let tiles = document.querySelectorAll(".tile");
 
-    for(let i = 0; i < tiles.length; i++) {
-        tiles[i].setAttribute("id", i);
-    }
+    tiles.forEach((tile, index) => {
+        tile.setAttribute("id", index);
+    });
 
 
     //player one starting position
     let player1Tile = $("#root").find(`[data-col='${randomCol}'][data-row='${randomRow}']`);
     player1Tile.addClass("active1");
+    player1Moves.push(player1Tile.attr("id"));
 
     //player two starting position
     let player2Tile = $("#root").find(`[data-col='${randomCol2}'][data-row='${randomRow2}']`);
     player2Tile.addClass("active2");
-
+    player2Moves.push(player2Tile.attr("id"));
 
     //set obstruction tiles
     for (let i = 0; i < 15; i++) {
@@ -150,14 +217,6 @@ $(document).ready(function () {
     }
 
 
-
-    player1.active = true;
-
-    if (player1.active) {
-        currentPlayer = player1;
-    } else {
-        currentPlayer = player2;
-    }
 
     //add click event listener with event delegated to elements containing the tile class
     rootDiv.click((e) => {
@@ -208,10 +267,41 @@ $(document).ready(function () {
             }
         }
         
+        console.log(player1Moves);
+        console.log(player1);
+        //current tile
+        let currentTileId = player1Moves[player1Moves.length - 1];   
+        //previous tile
+        let previousTileId = player1Moves[player1Moves.length - 2];
+//////////////////////////////////////////////////////////////////////////WORK ON THIS
 
-        if (player1.currentWeapon.length > 1) {
+        // if (currentTileId - 30 == previousTileId) {
+        //     if ($(`#${currentTileId - 20}`).data("weapon")) {
+                
+        //         if ($(`#${currentTileId - 20}`).data("weapon") === "banana") {
+        //             currentPlayer.currentWeapon.push(banana);
+        //         } else if ($(`#${currentTileId - 20}`).data("weapon") === "bomb") {
+        //             currentPlayer.currentWeapon.push(bomb);
+        //         } else if ($(`#${currentTileId - 20}`).data("weapon") === "greenShell") {
+        //             currentPlayer.currentWeapon.push(greenShell);
+        //         } else if ($(`#${currentTileId - 20}`).data("weapon") === "redShell") {
+        //             currentPlayer.currentWeapon.push(redShell);
+        //         }
+        //         $(`#${currentTileId - 20}`).removeClass("banana bomb redShell greenShell")
+        //         .addClass(player1.currentWeapon[player1.currentWeapon.length - 1].weaponType);
+        //         $(`#${currentTileId - 20}`).data("weapon").push(player1.currentWeapon[0].weaponType);
+                
+        //     }
+        //     player1.currentWeapon.push($(`#${currentTileId - 20}`).data("weapon"));
+        //     console.log(player1.currentWeapon)
+        // }
+
+        // playerOneWeapon.innerHTML = player1.currentWeapon[player1.currentWeapon.length - 1].weaponType;
+        
+///////////////////////////////////////////////////////////////////////////
+        
+        if (player1.currentWeapon.length > 0) {
             $(player1Tile).removeClass("banana bomb redShell greenShell");
-
             /******************************************************************************************************* */
             if($(`#${player1Moves[player1Moves.length - 2]}`).data("weapon")) {
                 $(`#${player1Moves[player1Moves.length - 2]}`).data("weapon").push(player1.currentWeapon[player1.currentWeapon.length - 2].weaponType);
@@ -226,7 +316,8 @@ $(document).ready(function () {
             //Remove data-weapon attribute when player collects their first weapon
             $(player1Tile).removeAttr("data-weapon");
         } else {
-            playerOneWeapon.innerHTML = "Banana";
+            //Each player starts with a banana as their default weapon
+            playerOneWeapon.innerHTML = "banana";
         }
 
         if (player2.currentWeapon.length > 1) {
@@ -251,14 +342,20 @@ $(document).ready(function () {
         
         //Battle conditions
         if(
-            Number($(player1Tile).attr("data-col")) + 1 === Number($(player2Tile).attr("data-col")) && $(player1Tile).attr("data-row") === $(player2Tile).attr("data-row") ||
-            Number($(player1Tile).attr("data-col")) - 1 === Number($(player2Tile).attr("data-col")) && $(player1Tile).attr("data-row") === $(player2Tile).attr("data-row") ||
-            Number($(player1Tile).attr("data-row")) + 1 === Number($(player2Tile).attr("data-row")) && $(player1Tile).attr("data-col") === $(player2Tile).attr("data-col") ||
-            Number($(player1Tile).attr("data-row")) - 1 === Number($(player2Tile).attr("data-row")) && $(player1Tile).attr("data-col") === $(player2Tile).attr("data-col")
+            Number($(player1Tile).attr("data-col")) + 1 === Number($(player2Tile).attr("data-col")) 
+            && $(player1Tile).attr("data-row") === $(player2Tile).attr("data-row") ||
+            Number($(player1Tile).attr("data-col")) - 1 === Number($(player2Tile).attr("data-col")) 
+            && $(player1Tile).attr("data-row") === $(player2Tile).attr("data-row") ||
+            Number($(player1Tile).attr("data-row")) + 1 === Number($(player2Tile).attr("data-row")) 
+            && $(player1Tile).attr("data-col") === $(player2Tile).attr("data-col") ||
+            Number($(player1Tile).attr("data-row")) - 1 === Number($(player2Tile).attr("data-row")) 
+            && $(player1Tile).attr("data-col") === $(player2Tile).attr("data-col")
         ) {
             battle();
         }
     });
+
+
 
     //caltulate allowed moves for each player
     const calculateMoves = (player) => {
@@ -274,109 +371,78 @@ $(document).ready(function () {
 
 
         for (let i = 0; i <= 99; i++) {
-            //console.log(document.getElementById(i))
 
-            if (Number(tiles[i].getAttribute("data-row")) === currentRow
-                && Number($(tiles[i]).attr("data-col")) <= maxCol
-                && Number($(tiles[i]).attr("data-col")) > currentCol
-                && !$(tiles[i]).hasClass("obstruction")
-                && !$(tiles[i]).hasClass("active1")
-                && !$(tiles[i]).hasClass("active2")) {
-                $(tiles[i]).addClass("new-move-green");
+            let tileRow = Number($(tiles[i]).attr("data-row"));
+            let tileCol = Number($(tiles[i]).attr("data-col"));
+
+            const conditions = () => {
+                if (!$(tiles[i]).hasClass("obstruction")
+                    && !$(tiles[i]).hasClass("active1")
+                    && !$(tiles[i]).hasClass("active2")) {
+                    $(tiles[i]).addClass("new-move-green");
+                }
             }
 
-            if (Number($(tiles[i]).attr("data-row")) === currentRow
-                && Number($(tiles[i]).attr("data-col")) >= minCol
-                && Number($(tiles[i]).attr("data-col")) < currentCol
-                && !$(tiles[i]).hasClass("obstruction")
-                && !$(tiles[i]).hasClass("active1")
-                && !$(tiles[i]).hasClass("active2")) {
-                $(tiles[i]).addClass("new-move-green");
-            }
-
-            if (Number($(tiles[i]).attr("data-col")) === currentCol
-                && Number($(tiles[i]).attr("data-row")) <= maxRow
-                && Number($(tiles[i]).attr("data-row")) > currentRow
-                && !$(tiles[i]).hasClass("obstruction")
-                && !$(tiles[i]).hasClass("active1")
-                && !$(tiles[i]).hasClass("active2")) {
-                $(tiles[i]).addClass("new-move-green");
-            }
-
-            if (Number(tiles[i].getAttribute("data-col")) === currentCol
-                && Number(tiles[i].getAttribute("data-row")) >= minRow
-                && Number(tiles[i].getAttribute("data-row")) < currentRow
-                && !$(tiles[i]).hasClass("obstruction")
-                && !$(tiles[i]).hasClass("active1") 
-                && !$(tiles[i]).hasClass("active2")) {
-                $(tiles[i]).addClass("new-move-green");
+            if (tileRow === currentRow
+                && tileCol <= maxCol
+                && tileCol > currentCol) {
+                conditions();
+            } else if (tileRow === currentRow
+                && tileCol >= minCol
+                && tileCol < currentCol) {
+                conditions();
+            }else if (tileCol === currentCol
+                && tileRow  <= maxRow
+                && tileRow  > currentRow) {
+                conditions();
+            }else if (tileCol === currentCol
+                && tileRow  >= minRow
+                && tileRow  < currentRow) {
+                conditions();
             }
         }
 
         for (let i = 0; i <= 99; i++) {
-            if (Number($(tiles[i]).attr("data-row")) === currentRow
-                && Number($(tiles[i]).attr("data-col")) <= maxCol
-                && Number($(tiles[i]).attr("data-col")) > currentCol
-                && ($(tiles[i]).hasClass("obstruction") || $(tiles[i]).hasClass("active2") || $(tiles[i]).hasClass("active1"))) {
-                if (document.getElementById(i + 10) ) {
-                    if (document.getElementById(i + 10).getAttribute("class", "new-move-green")) {
-                        document.getElementById(i + 10).classList.remove("new-move-green");
-                    }
-                }
-                if (document.getElementById(i + 20)) {
-                    if (document.getElementById(i + 10).getAttribute("class", "new-move-green")) {
-                        document.getElementById(i + 20).classList.remove("new-move-green");
-                    }
-                }
-            }
-            if (Number($(tiles[i]).attr("data-row")) === currentRow
-                && Number($(tiles[i]).attr("data-col")) >= minCol
-                && Number($(tiles[i]).attr("data-col")) < currentCol
-                && ($(tiles[i]).hasClass("obstruction") || $(tiles[i]).hasClass("active2") || $(tiles[i]).hasClass("active1"))) {
-                if (document.getElementById(i - 10)) {
-                    if (document.getElementById(i - 10).getAttribute("class", "new-move-green")) {
-                        document.getElementById(i - 10).classList.remove("new-move-green");
-                    }
-                }
-                
-                if (document.getElementById(i - 20)) {
-                    if (document.getElementById(i - 20).getAttribute("class", "new-move-green")) {
-                        document.getElementById(i - 20).classList.remove("new-move-green");
+
+            const obstruction = num => {
+                if ($(tiles[i]).hasClass("obstruction") 
+                    || $(tiles[i]).hasClass("active2") 
+                    || $(tiles[i]).hasClass("active1")) {
+                    if (document.getElementById(i + num)) {
+                        if (document.getElementById(i + num).getAttribute("class", "new-move-green")) {
+                            document.getElementById(i + num).classList.remove("new-move-green");
+                        }
                     }
                 }
             }
 
-            if (Number($(tiles[i]).attr("data-col")) === currentCol
-                && Number($(tiles[i]).attr("data-row")) <= maxRow
-                && Number($(tiles[i]).attr("data-row")) > currentRow
-                && ($(tiles[i]).hasClass("obstruction") || $(tiles[i]).hasClass("active2") || $(tiles[i]).hasClass("active1"))) {
-                if (document.getElementById(i + 1)) {
-                    if (document.getElementById(i + 1).getAttribute("class", "new-move-green")) {
-                        document.getElementById(i + 1).classList.remove("new-move-green");
-                    }
-                }
-                
-                if (document.getElementById(i + 2)) {
-                    if (document.getElementById(i + 2).getAttribute("class", "new-move-green")) {
-                        document.getElementById(i + 2).classList.remove("new-move-green");
-                    }
-                }
-            }
-            if (Number($(tiles[i]).attr("data-col")) === currentCol
-                && Number(tiles[i].getAttribute("data-row")) >= minRow
-                && Number($(tiles[i]).attr("data-row")) < currentRow
-                && ($(tiles[i]).hasClass("obstruction") || $(tiles[i]).hasClass("active2") || $(tiles[i]).hasClass("active1"))) {
-                if (document.getElementById(i - 1)) {
-                    if (document.getElementById(i - 1).getAttribute("class", "new-move-green")) {
-                        document.getElementById(i - 1).classList.remove("new-move-green");
-                    }
-                }
+            let tileRow = Number($(tiles[i]).attr("data-row"));
+            let tileCol = Number($(tiles[i]).attr("data-col"));
 
-                if (document.getElementById(i - 2)) {
-                    if (document.getElementById(i - 2).getAttribute("class", "new-move-green")) {
-                        document.getElementById(i - 2).classList.remove("new-move-green");
-                    }
-                }
+            if (tileRow === currentRow
+                && tileCol <= maxCol
+                && tileCol > currentCol) {
+                obstruction(10);
+                obstruction(20);
+            }
+            if (tileRow === currentRow
+                && tileCol >= minCol
+                && tileCol < currentCol) {
+                obstruction(-10);
+                obstruction(-20);
+            }
+
+            if (tileCol === currentCol
+                && tileRow <= maxRow
+                && tileRow > currentRow) {
+                obstruction(1);
+                obstruction(2);
+            }
+            if (tileCol === currentCol
+                && tileRow >= minRow
+                && tileRow < currentRow) {
+                obstruction(-1);
+                obstruction(-2);
             }
         }
     }
@@ -389,44 +455,31 @@ $(document).ready(function () {
     }
 
 
-    const battle = () => {
-        battleDiv.style.display = "block"
-        if(player1.active) {
-            playerTwoBattleCard.addClass("active-card");
-            playerOneBattleCard.removeClass("active-card");
-        } else {
-            playerOneBattleCard.addClass("active-card");
-            playerTwoBattleCard.removeClass("active-card");
-        }
-        alert("fight");
-    }
-
     $(playerOneAttackBtn).click(() => {
         player1.attack();
-        playerTwoBattleCard.addClass("active-card");
-        playerOneBattleCard.removeClass("active-card");
-        $(playerOneAttackBtn).addClass("no-click");
-        $(playerTwoAttackBtn).removeClass("no-click");
-        player1.active = false;
-        player2.active = true;
+        playerOneActiveCard();
     });
 
     $(playerTwoAttackBtn).click(() => {
         player2.attack();
-        playerOneBattleCard.addClass("active-card");
-        playerTwoBattleCard.removeClass("active-card");
-        $(playerTwoAttackBtn).addClass("no-click");
-        $(playerOneAttackBtn).removeClass("no-click");
-        player2.active = false;
-        player1.active = true;
+        playerTwoActiveCard();
     });
 
+    $(playerOneDefendBtn).click(() => {
+        player1.defend();
+        playerOneActiveCard();
+    });
+
+    $(playerTwoDefendBtn).click(() => {
+        player2.defend();
+        playerTwoActiveCard();
+    });
 
 
     playerOneHealth.innerHTML = player1.health;
     playerTwoHealth.innerHTML = player2.health;
-    playerOneWeapon.innerHTML = "Banana";
-    playerTwoWeapon.innerHTML = "Banana";
+    playerOneWeapon.innerHTML = "banana";
+    playerTwoWeapon.innerHTML = "banana";
 
     playerOneBattleCardHealth.innerHTML = player1.health;
     playerTwoBattleCardHealth.innerHTML = player2.health;

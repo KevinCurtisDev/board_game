@@ -169,7 +169,7 @@ main {
 }
 
 .active-card {
-  background-color: #ccffcc;
+  border: 20px solid #ccffcc;
 }
 
 .attack-btn {
